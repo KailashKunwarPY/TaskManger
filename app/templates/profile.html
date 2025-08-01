@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-header">
+        <div class="profile-avatar">
+            {{ current_user.username[0]|upper }}
+        </div>
+        <div class="profile-info">
+            <h2>{{ current_user.username }}</h2>
+            <p>{{ current_user.email }}</p>
+        </div>
+    </div>
+
+    <div class="profile-details">
+        <div class="profile-card">
+            <h3>Account Information</h3>
+            <p><strong>Username:</strong> {{ current_user.username }}</p>
+            <p><strong>Email:</strong> {{ current_user.email }}</p>
+            <p><strong>Member since:</strong> {{ current_user.created_at.strftime('%B %d, %Y') if current_user.created_at else 'N/A' }}</p>
+        </div>
+
+        <div class="profile-card">
+            <h3>Task Statistics</h3>
+            <p><strong>Total tasks:</strong> {{ current_user.tasks.count() }}</p>
+            <p><strong>Completed:</strong> {{ current_user.tasks.filter_by(completed=True).count() }}</p>
+            <p><strong>Pending:</strong> {{ current_user.tasks.filter_by(completed=False).count() }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

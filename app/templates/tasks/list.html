@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="task-list-header">
+    <h1>Your Tasks</h1>
+    <div>
+        <a href="{{ url_for('tasks.create_task') }}" class="btn btn-primary">New Task</a>
+        <button id="export-tasks" class="btn btn-secondary">Export Tasks</button>
+        <button id="import-tasks" class="btn btn-secondary">Import Tasks</button>
+        <input type="file" id="task-import-file" accept=".json" style="display: none;">
+    </div>
+</div>
+
+<form id="task-filters" class="task-filters">
+    <div class="filter-group">
+        <label for="priority">Priority</label>
+        <select name="priority" id="priority" class="form-control">
+            <option value="All">All Priorities</option>
+            <option value="High" {% if request.args.get('priority') == 'High' %}selected{% endif %}>High</option>
+            <option value="Medium" {% if request.args.get('priority') == 'Medium' %}selected{% endif %}>Medium</option>
+            <option value="Low" {% if request.args.get('priority') == 'Low' %}selected{% endif %}>Low</option>
+        </select>
+    </div>
+    <div class="filter-group">
+        <label for="status">Status</label>
+        <select name="status" id="status" class="form-control">
+            <option value="all" {% if not request.args.get('status') %}selected{% endif %}>All Statuses</option>
+            <option value="completed" {% if request.args.get('status') == 'completed' %}selected{% endif %}>Completed</option>
+            <option value="pending" {% if request.args.get('status') == 'pending' %}selected{% endif %}>Pending</option>
+        </select>
+    </div>
+    <div class="filter-group">
+        <label for="due_date">Due Date</label>
+        <input type="date" name="due_date" id="due_date" class="form-control" 
+               value="{{ request.args.get('due_date') }}">
+    </div>
+    <div class="filter-group">
+        <button type="submit" class="btn btn-primary">Apply Filters</button>
+        <button type="button" id="reset-filters" class="btn btn-secondary">Reset</button>
+    </div>
+</form>
+
+<div class="task-list">
+    {% for task in tasks %}
+    <div class="task-card {% if task.completed %}completed{% endif %}">
+        <div class="task-info">
+            <h3>{{ task.title }}</h3>
+            <p>{{ task.description }}</p>
+            <div class="task-meta">
+                <span class="priority priority-{{ task.priority|lower }}">{{ task.priority }}</span>
+                <span><i class="far fa-calendar-alt"></i> {% if task.due_date %}{{ task.due_date.strftime('%b %d, %Y') }}{% else %}No due date{% endif %}</span>
+                <span><i class="far fa-clock"></i> {{ task.created_at.strftime('%b %d, %Y') }}</span>
+            </div>
+        </div>
+        <div class="task-actions">
+            <button class="task-btn complete" data-task-id="{{ task.id }}">
+                {% if task.completed %}Undo{% else %}Complete{% endif %}
+            </button>
+            <a href="{{ url_for('tasks.edit_task', id=task.id) }}" class="task-btn edit">Edit</a>
+            <form action="{{ url_for('tasks.delete_task', id=task.id) }}" method="post" style="display: inline;">
+                <button type="submit" class="task-btn delete">Delete</button>
+            </form>
+        </div>
+    </div>
+    {% else %}
+    <div class="no-tasks">
+        <p>No tasks found. <a href="{{ url_for('tasks.create_task') }}">Create your first task!</a></p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/tasks.js') }}"></script>
+{% endblock %}

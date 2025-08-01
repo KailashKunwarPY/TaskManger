@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero">
+    <h1>Welcome to Task Manager</h1>
+    <p>Organize your tasks efficiently with our powerful task management system</p>
+    <div class="cta-buttons">
+        {% if current_user.is_authenticated %}
+            <a href="{{ url_for('tasks.task_list') }}" class="btn btn-primary">View Tasks</a>
+        {% else %}
+            <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Login</a>
+            <a href="{{ url_for('auth.signup') }}" class="btn btn-secondary">Sign Up</a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="features">
+    <div class="feature-card">
+        <i class="fas fa-tasks"></i>
+        <h3>Task Management</h3>
+        <p>Create, edit, and organize your tasks with ease</p>
+    </div>
+    <div class="feature-card">
+        <i class="fas fa-chart-pie"></i>
+        <h3>Dashboard</h3>
+        <p>Track your productivity with visual statistics</p>
+    </div>
+    <div class="feature-card">
+        <i class="fas fa-moon"></i>
+        <h3>Dark Mode</h3>
+        <p>Eye-friendly interface for late-night productivity</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Any additional scripts for the home page
+</script>
+{% endblock %}

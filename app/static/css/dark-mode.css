@@ -1,0 +1,35 @@
+:root {
+    --primary-color: #6c8fc7;
+    --secondary-color: #4a6fa5;
+    --accent-color: #64b5f6;
+    --background-color: #121212;
+    --text-color: #e0e0e0;
+    --light-text: #b0b0b0;
+    --border-color: #333;
+    --card-bg: #1e1e1e;
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.priority-high {
+    background-color: #3d1a1a;
+    color: #ff8a80;
+}
+
+.priority-medium {
+    background-color: #332a1a;
+    color: #ffd54f;
+}
+
+.priority-low {
+    background-color: #1a3321;
+    color: #81c784;
+}
+
+.profile-card {
+    background-color: #2a2a2a;
+}
